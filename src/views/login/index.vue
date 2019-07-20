@@ -1,24 +1,25 @@
 <template>
   <div class="login-container">
     <el-card class="login-box">
-      <img src="../../assets/images/logo_index.png"/>
-      <el-form ref="loginForm" :model="loginForm">
-        <el-form-item>
+      <img src="../../assets/images/logo_index.png" />
+      <el-form ref="Formlogin" :model="loginForm" :rules="loginRules">
+        <el-form-item prop="mobile">
           <el-input v-model="loginForm.mobile" placeholder="请输入手机号"></el-input>
         </el-form-item>
-        <el-form-item>
+        <el-form-item prop="code">
           <el-input v-model="loginForm.code" placeholder="请输入验证码" style="width:240px"></el-input>
           <el-button style="float:right">发送验证码</el-button>
         </el-form-item>
         <el-form-item>
           <el-checkbox v-model="checked">
             <span>我已同意并阅读</span>
-            <el-button type="text">用户协议</el-button><span>和</span>
+            <el-button type="text">用户协议</el-button>
+            <span>和</span>
             <el-button type="text">隐私条款</el-button>
           </el-checkbox>
         </el-form-item>
         <el-form-item>
-           <el-button type="primary" style="width:100%">登录</el-button>
+          <el-button type="primary" style="width:100%" @click="Formlogin('loginForm')">登录</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -28,15 +29,48 @@
 <script>
 export default {
   data () {
+    // 因为函数要先声明在使用,所以要在return返回之前去声明
+    const checkMobile = (rule, value, callback) => {
+      if (/^1[3-9]\d{9}$/.test(value)) {
+        callback()
+      } else {
+        callback(new Error('手机号格式不正确'))
+      }
+    }
     return {
       checked: true,
+      // 表单数据对象
       loginForm: {
-        model: '',
+        mobile: '',
         code: ''
+      },
+      // 表单验证规则
+      loginRules: {
+        // trigger: ‘blur’ 表示“当失去焦点时（光标不显示的时候），触发此提示”
+        mobile: [
+          { required: true, message: '请输入您的手机号', trigger: 'blur' },
+          { validator: checkMobile, trigger: 'blur' }
+        ],
+        code: [
+          { required: true, message: '请输如您获取的验证码', trigger: 'blur' },
+          { len: 6, message: '请输入六位数字', trigger: 'blur' }
+        ]
       }
+    }
+  },
+  methods: {
+    Formlogin () {
+      // 对整个loginForm表单进行验证
+      this.$refs.Formlogin.validate((valid) => {
+        if (valid) {
+          // 提交登录请求
+
+        }
+      })
     }
   }
 }
+
 </script>
 
 <style scoped lang='less'>
@@ -54,15 +88,15 @@ export default {
     height: 335px;
     position: absolute;
     left: 50%;
-    top:50%;
+    top: 50%;
     transform: translate(-50%, -50%);
     img {
       display: block;
       width: 200px;
       margin: 10px auto;
     }
-    span{
-        color:  #333
+    span {
+      color: #333;
     }
   }
 }
