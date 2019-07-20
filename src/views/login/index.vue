@@ -58,19 +58,29 @@ export default {
       }
     }
   },
+
   methods: {
     Formlogin () {
       // 对整个loginForm表单进行验证
-      this.$refs.Formlogin.validate((valid) => {
+      this.$refs.Formlogin.validate(valid => {
         if (valid) {
-          // 提交登录请求
-
+          // 提交登录请求,参数一是地址,参数二是你要传回后端的数据也就是loginForm当中包含的字段
+          this.$http
+            .post(
+              'http://ttapi.research.itcast.cn/mp/v1_0/authorizations',
+              this.loginForm
+            )
+            .then(res => {
+              this.$router.push('/')
+            })
+            .catch(() => {
+              this.$message.error('手机号或验证码错误')
+            })
         }
       })
     }
   }
 }
-
 </script>
 
 <style scoped lang='less'>
