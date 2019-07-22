@@ -9,6 +9,8 @@ import Login from '../views/login/index.vue'
 import Home from '../views/home/index.vue'
 // 引入welcome组件
 import Welcome from '../views/welcome/index.vue'
+// 引入404组件
+import NotFound from '../views/404/index.vue'
 // 3.注册路由
 Vue.use(VueRouter)
 // 4.配置路由规则,初始化路由对象
@@ -19,7 +21,8 @@ const router = new VueRouter({
       path: '/',
       component: Home,
       children: [
-        { name: 'welcome', path: '', component: Welcome }
+        { name: 'welcome', path: '', component: Welcome },
+        { name: '404', path: '*', component: NotFound }
       ]
     }
   ]
