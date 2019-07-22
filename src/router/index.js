@@ -27,5 +27,16 @@ const router = new VueRouter({
     }
   ]
 })
+router.beforeEach((to, from, next) => {
+  // ... 每一次的跳转路由会执行这个函数
+  // to 目标路由对象  from 当前路由对象  to.path 目标路径
+  // next() 放行  next('/login') 拦截
+  if (to.path === '/login') {
+    return next()
+  }
+  const user = window.sessionStorage.getItem('hm74--vueonehoutai')
+  if (user) return next()
+  next('/login')
+})
 // 5.导出路由给其他组件
 export default router

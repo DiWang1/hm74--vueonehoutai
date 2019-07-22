@@ -71,6 +71,8 @@ export default {
               this.loginForm
             )
             .then(res => {
+              // 保存数据,登录保持会话状态,res.data.data用来获取token的
+              window.sessionStorage.setItem('hm74--vueonehoutai', JSON.stringify(res.data.data))
               this.$router.push('/')
             })
             .catch(() => {
