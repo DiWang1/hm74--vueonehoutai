@@ -62,22 +62,35 @@ export default {
   methods: {
     Formlogin () {
       // 对整个loginForm表单进行验证
-      this.$refs.Formlogin.validate(valid => {
+      // this.$refs.Formlogin.validate(valid => {
+      //   if (valid) {
+      //     // 提交登录请求,参数一是地址,参数二是你要传回后端的数据也就是loginForm当中包含的字段
+      //     this.$http
+      //       .post(
+      //         'authorizations',
+      //         this.loginForm
+      //       )
+      //       .then(res => {
+      //         // 保存数据,登录保持会话状态,res.data.data用来获取token的
+      //         window.sessionStorage.setItem('hm74--vueonehoutai', JSON.stringify(res.data.data))
+      //         this.$router.push('/')
+      //       })
+      //       .catch(() => {
+      //         this.$message.error('手机号或验证码错误')
+      //       })
+      //   }
+      // })
+      // 使用async修饰函数搭配
+      this.$refs.Formlogin.validate(async valid => {
         if (valid) {
-          // 提交登录请求,参数一是地址,参数二是你要传回后端的数据也就是loginForm当中包含的字段
-          this.$http
-            .post(
-              'authorizations',
-              this.loginForm
-            )
-            .then(res => {
-              // 保存数据,登录保持会话状态,res.data.data用来获取token的
-              window.sessionStorage.setItem('hm74--vueonehoutai', JSON.stringify(res.data.data))
-              this.$router.push('/')
-            })
-            .catch(() => {
-              this.$message.error('手机号或验证码错误')
-            })
+          // try{业务逻辑}catch{提示错误信息}
+          try {
+            const res = await this.$http.post('authorizations', this.loginForm)
+            window.sessionStorage.setItem('hm74--vueonehoutai', JSON.stringify(res.data.data))
+            this.$router.push('/')
+          } catch (err) {
+            this.$message.error('手机或验证码出现问题')
+          }
         }
       })
     }
